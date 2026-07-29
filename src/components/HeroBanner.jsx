@@ -13,7 +13,7 @@ const HeroBanner = ({ onActionClick }) => {
                         </h3>
                         <p className="text-white/60 font-medium text-center">Síguenos para conocer nuevos lanzamientos, guías de pintura y procesos en el taller.</p>
                     </div>
-                    <div className="flex gap-4 mx-auto justify-center">
+                    <div className="flex gap-4 mx-auto justify-evenly">
                         {import.meta.env.VITE_WHATSAPP_NUMBER && <a href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-contrast/70 hover:bg-cat-contrast rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">
                             <SiWhatsapp size={32} />
                         </a>}

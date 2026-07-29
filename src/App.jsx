@@ -37,7 +37,7 @@ function App() {
   const [showBrandInfo, setShowBrandInfo] = useState(false);
   const [showRecentlyViewed, setShowRecentlyViewed] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState(() => {
-    const saved = localStorage.getItem('recently_viewed');
+    const saved = localStorage.getItem(`recently_viewed_${import.meta.env.VITE_APP}`);
     return saved ? JSON.parse(saved) : [];
   });
   const loaderRef = useRef(null);
@@ -58,7 +58,7 @@ function App() {
       setRecentlyViewed(prev => {
         const filtered = prev.filter(p => p.id !== product.id);
         const updated = [product, ...filtered].slice(0, 20); // Keep last 20
-        localStorage.setItem('recently_viewed', JSON.stringify(updated));
+        localStorage.setItem(`recently_viewed_${import.meta.env.VITE_APP}`, JSON.stringify(updated));
         return updated;
       });
     }
