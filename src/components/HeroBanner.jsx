@@ -1,4 +1,5 @@
-import { Scan, Instagram, Facebook } from 'lucide-react';
+
+import { SiFacebook, SiInstagram, SiWhatsapp } from '@icons-pack/react-simple-icons';
 import { BANNER_CONFIG } from '../config';
 
 const HeroBanner = ({ onActionClick }) => {
@@ -13,11 +14,14 @@ const HeroBanner = ({ onActionClick }) => {
                         <p className="text-white/60 font-medium text-center">Síguenos para conocer nuevos lanzamientos, guías de pintura y procesos en el taller.</p>
                     </div>
                     <div className="flex gap-4 mx-auto justify-center">
+                        {import.meta.env.VITE_WHATSAPP_NUMBER && <a href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-contrast/70 hover:bg-cat-contrast rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">
+                            <SiWhatsapp size={32} />
+                        </a>}
                         {import.meta.env.VITE_INSTAGRAM_PAGE && <a href={`https://instagram.com/${import.meta.env.VITE_INSTAGRAM_PAGE}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-contrast/70 hover:bg-cat-contrast rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">
-                            <Instagram size={32} />
+                            <SiInstagram size={32} />
                         </a>}
                         {import.meta.env.VITE_FACEBOOK_PAGE && <a href={`https://facebook.com/${import.meta.env.VITE_FACEBOOK_PAGE}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-contrast/70 hover:bg-cat-contrast rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">
-                            <Facebook size={32} />
+                            <SiFacebook size={32} />
                         </a>}
                     </div>
                 </div>

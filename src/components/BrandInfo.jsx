@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { ChevronLeft, ShoppingBag, Heart, Target, Star, Instagram, Facebook } from 'lucide-react';
+import { ChevronLeft, Heart, Target, Star } from 'lucide-react';
+import { SiFacebook, SiInstagram, SiWhatsapp } from '@icons-pack/react-simple-icons';
 import { APP_CONFIG } from '../config';
 
 const BrandInfo = ({ onClose }) => {
@@ -91,11 +92,14 @@ const BrandInfo = ({ onClose }) => {
                             <p className="text-white/60 font-medium text-center">Síguenos para conocer nuevos lanzamientos, guías de pintura y procesos en el taller.</p>
                         </div>
                         <div className="flex gap-4">
+                            {import.meta.env.VITE_WHATSAPP_NUMBER && <a href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-darkest/10 hover:bg-cat-darkest/20 rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">
+                                <SiWhatsapp size={32} />
+                            </a>}
                             {import.meta.env.VITE_INSTAGRAM_PAGE && <a href={`https://instagram.com/${import.meta.env.VITE_INSTAGRAM_PAGE}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-darkest/10 hover:bg-cat-darkest/20 rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">
-                                <Instagram size={32} />
+                                <SiInstagram size={32} />
                             </a>}
                             {import.meta.env.VITE_FACEBOOK_PAGE && <a href={`https://facebook.com/${import.meta.env.VITE_FACEBOOK_PAGE}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-darkest/10 hover:bg-cat-darkest/20 rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">
-                                <Facebook size={32} />
+                                <SiFacebook size={32} />
                             </a>}
                         </div>
                     </section>

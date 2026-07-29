@@ -1,5 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ZoomIn, ShoppingBag, MessageCircle, Facebook } from 'lucide-react';
+import { X, ZoomIn, ShoppingBag, MessageCircle } from 'lucide-react';
+import { SiFacebook, SiWhatsapp } from '@icons-pack/react-simple-icons';
+
 import { CONTACT_CONFIG } from '../config';
 import { parseDescription } from '../utils/helpers';
 
@@ -146,7 +148,7 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                         )}
 
                                         <div className="flex flex-col gap-3">
-                                            <button
+                                            {import.meta.env.VITE_WHATSAPP_NUMBER && <button
                                                 onClick={() => handleWhatsApp(selectedProductData.title || selectedProduct.name, selectedVariant, selectedProduct.image)}
                                                 className={`w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight ${selectedProductData.variants.length > 0 && !selectedVariant
                                                     ? 'bg-cat-darkest/40 border border-cat-light/10 text-cat-light/10 cursor-not-allowed shadow-none'
@@ -154,13 +156,13 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                                     }`}
                                                 disabled={selectedProductData.variants.length > 0 && !selectedVariant}
                                             >
-                                                <MessageCircle size={24} />
+                                                <SiWhatsapp size={24} />
                                                 {selectedProductData.variants.length > 0 && !selectedVariant
                                                     ? 'Selecciona una opción'
                                                     : 'Consultar por WhatsApp'}
-                                            </button>
+                                            </button>}
 
-                                            <button
+                                            {import.meta.env.VITE_FACEBOOK_PAGE && <button
                                                 onClick={() => handleFacebook(selectedProductData.title || selectedProduct.name, selectedVariant, selectedProduct.image)}
                                                 className={`w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight ${selectedProductData.variants.length > 0 && !selectedVariant
                                                     ? 'bg-cat-darkest/40 border border-cat-light/10 text-cat-light/10 cursor-not-allowed shadow-none'
@@ -168,9 +170,9 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                                     }`}
                                                 disabled={selectedProductData.variants.length > 0 && !selectedVariant}
                                             >
-                                                <Facebook size={24} />
+                                                <SiFacebook size={24} />
                                                 Consultar por Facebook
-                                            </button>
+                                            </button>}
                                         </div>
                                     </div>
                                 </div>
