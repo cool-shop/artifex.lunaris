@@ -9,9 +9,9 @@ export const GOOGLE_DRIVE_CONFIG = {
         },
         {
             id: 'https://drive.google.com/drive/folders/17C46eQ0qYHPxdUGPn89UvQMpkAS2SMUq',
-            name: 'WarGames',
+            name: 'Ciencia Ficción',
             icon: 'Cup',
-            image: 'https://lh3.googleusercontent.com/u/0/d/11cDVrtab46rvY4aqiIZxwJmkaHsi_FzU=s400'
+            image: 'https://lh3.googleusercontent.com/u/0/d/11GSdpA5TDdS09hvtcn8CPIZLY_pRAy7S=s400'
         },
         {
             id: 'https://drive.google.com/drive/folders/148xla20sXd87q23tXjf8WFIvgJr4pA2x',
@@ -19,18 +19,18 @@ export const GOOGLE_DRIVE_CONFIG = {
             icon: 'Clothes',
             image: 'https://lh3.googleusercontent.com/u/0/d/11cDVrtab46rvY4aqiIZxwJmkaHsi_FzU=s400'
         },
-        {
-            id: 'https://drive.google.com/drive/folders/1AHyV-d4SgcmM1-s1OSVuX-pAJSeQwix4',
-            name: 'Anime',
-            icon: 'Sparkles',
-            image: 'https://lh3.googleusercontent.com/u/0/d/11cDVrtab46rvY4aqiIZxwJmkaHsi_FzU=s400'
-        },
-        {
-            id: 'https://drive.google.com/drive/folders/1b8YPoDIsFPYK_DQV20yYrgB_A8LePKDP',
-            name: 'Llaveros',
-            icon: 'Key',
-            image: 'https://lh3.googleusercontent.com/u/0/d/11cDVrtab46rvY4aqiIZxwJmkaHsi_FzU=s400'
-        },
+        // {
+        //     id: 'https://drive.google.com/drive/folders/1AHyV-d4SgcmM1-s1OSVuX-pAJSeQwix4',
+        //     name: 'Anime',
+        //     icon: 'Sparkles',
+        //     image: 'https://lh3.googleusercontent.com/u/0/d/11cDVrtab46rvY4aqiIZxwJmkaHsi_FzU=s400'
+        // },
+        // {
+        //     id: 'https://drive.google.com/drive/folders/1b8YPoDIsFPYK_DQV20yYrgB_A8LePKDP',
+        //     name: 'Llaveros',
+        //     icon: 'Key',
+        //     image: 'https://lh3.googleusercontent.com/u/0/d/11cDVrtab46rvY4aqiIZxwJmkaHsi_FzU=s400'
+        // },
     ]
 };
 
