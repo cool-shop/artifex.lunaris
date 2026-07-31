@@ -57,7 +57,7 @@ export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12
                     hasMore = true;
                 }
             });
-
+            console.log(allFiles)
             return {
                 files: allFiles,
                 nextPageToken: hasMore ? JSON.stringify(nextTokens) : null
@@ -185,3 +185,35 @@ export const deleteFileFromDrive = async (accessToken, fileId) => {
         throw error;
     }
 };
+
+export const fetchFileById = async (fileId) => {
+    if (!API_KEY || API_KEY === 'YOUR_GOOGLE_DRIVE_API_KEY' || !fileId) {
+        return null;
+    }
+    try {
+        const response = await axios.get(
+            `https://www.googleapis.com/drive/v3/files/${fileId}`,
+            {
+                params: {
+                    fields: 'id, name, thumbnailLink, description, createdTime, parents',
+                    key: API_KEY,
+                },
+            }
+        );
+        const file = response.data;
+        return {
+            id: file.id,
+            name: file.name.split('.')[0],
+            description: file.description || '',
+            createdTime: file.createdTime,
+            image: file.thumbnailLink ? file.thumbnailLink.replace(/=s\d+$/, '=s1000') : null,
+            thumbnail: file.thumbnailLink,
+            driveUrl: `https://drive.google.com/open?id=${file.id}`,
+            parents: file.parents || []
+        };
+    } catch (error) {
+        console.error('Error fetching file by ID from Google Drive:', error);
+        return null;
+    }
+};
+

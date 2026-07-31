@@ -17,7 +17,7 @@ import { GOOGLE_DRIVE_CONFIG } from '../config';
 import { fetchFolderFiles, uploadFileToDrive, updateFileMetadata, deleteFileFromDrive } from '../services/googleDrive';
 import { parseDescription } from '../utils/helpers';
 
-const AdminPanel = ({ user, onClose }) => {
+const AdminPanel = ({ user, onClose, initialProductToEdit }) => {
     const [mode, setMode] = useState('list'); // 'list' or 'upload' or 'edit'
     const [selectedFolder, setSelectedFolder] = useState(GOOGLE_DRIVE_CONFIG.FOLDERS.find(f => !['all', 'latest'].includes(f.id)));
     const [products, setProducts] = useState([]);
@@ -193,13 +193,25 @@ const AdminPanel = ({ user, onClose }) => {
     const startEditing = (product) => {
         const parsed = parseDescription(product.description);
         setEditingProduct(product);
+        
+        let targetCategoryId = selectedFolder?.id || '';
+        const parentId = product.parents?.[0];
+        if (parentId) {
+            const cleanId = (id) => id.includes('folders/') ? id.split('folders/')[1].split('?')[0].split('/')[0] : id;
+            const matchingFolder = folders.find(f => cleanId(f.id) === parentId);
+            if (matchingFolder) {
+                targetCategoryId = matchingFolder.id;
+                setSelectedFolder(matchingFolder);
+            }
+        }
+
         setFormData({
             title: parsed.title || product.name,
             description: parsed.description || '',
             variants: parsed.variants.length > 0 ? parsed.variants : [{ name: '', price: '' }],
             file: null,
             fileUrl: parsed.fileUrl || '',
-            categoryId: selectedFolder?.id || ''
+            categoryId: targetCategoryId
         });
         setMode('edit');
     };
@@ -215,6 +227,12 @@ const AdminPanel = ({ user, onClose }) => {
         });
         setEditingProduct(null);
     };
+
+    useEffect(() => {
+        if (initialProductToEdit) {
+            startEditing(initialProductToEdit);
+        }
+    }, [initialProductToEdit]);
 
     return (
         <motion.div
@@ -376,6 +394,19 @@ const AdminPanel = ({ user, onClose }) => {
                                                 </>
                                             )}
                                         </div>
+                                    </div>
+                                </div>
+                            )}
+                            {/* Current Image Preview (Only for Edit Mode) */}
+                            {mode === 'edit' && editingProduct && (
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-cat-light/50 ml-1">Imagen del Producto</label>
+                                    <div className="relative rounded-[2rem] overflow-hidden border border-cat-light/10 bg-cat-dark p-4 flex justify-center items-center h-44">
+                                        <img
+                                            src={editingProduct.image}
+                                            alt={formData.title}
+                                            className="max-h-40 object-contain rounded-xl"
+                                        />
                                     </div>
                                 </div>
                             )}

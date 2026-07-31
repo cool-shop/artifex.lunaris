@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { GOOGLE_DRIVE_CONFIG } from './config';
-import { fetchFolderFiles } from './services/googleDrive';
+import { fetchFolderFiles, fetchFileById } from './services/googleDrive';
 import { parseDescription } from './utils/helpers';
 
 // Components
@@ -36,6 +36,7 @@ function App() {
   const [showAdmin, setShowAdmin] = useState(false);
   const [showBrandInfo, setShowBrandInfo] = useState(false);
   const [showRecentlyViewed, setShowRecentlyViewed] = useState(false);
+  const [productToEdit, setProductToEdit] = useState(null);
   const [recentlyViewed, setRecentlyViewed] = useState(() => {
     const saved = localStorage.getItem(`recently_viewed_${import.meta.env.VITE_APP}`);
     return saved ? JSON.parse(saved) : [];
@@ -62,6 +63,12 @@ function App() {
         return updated;
       });
     }
+  };
+
+  const handleEditProduct = (product) => {
+    setSelectedProduct(null);
+    setProductToEdit(product);
+    setShowAdmin(true);
   };
 
   const loadProducts = async (isNextPage = false, forceRefresh = false) => {
@@ -115,6 +122,36 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const handleUrlQuery = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const fileId = params.get('q');
+      if (!fileId) return;
+
+      setLoading(true);
+      const product = await fetchFileById(fileId);
+      setLoading(false);
+
+      if (product) {
+        const { cleanFolderId } = await import('./services/googleDrive');
+        const parentId = product.parents?.[0];
+        if (parentId) {
+          const matchingCategory = GOOGLE_DRIVE_CONFIG.FOLDERS.find(f => cleanFolderId(f.id) === parentId);
+          if (matchingCategory) {
+            setActiveCategory(matchingCategory);
+          }
+        }
+        handleProductSelect(product);
+
+        // Remove q parameter from URL to clean up location bar
+        const newUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
+    };
+
+    handleUrlQuery();
+  }, []);
+
+  useEffect(() => {
     loadProducts();
   }, [activeCategory]);
 
@@ -134,8 +171,9 @@ function App() {
     };
   }, [productsCache, activeCategory]);
 
-  // Added checkAdminStatus function
-  const checkAdminStatus = async (accessToken) => {
+
+  // Añadimos el parámetro promptLogin (opcional) para volver a abrir el modal de Google si el token caducó
+  const checkAdminStatus = async (accessToken, promptLogin = null) => {
     try {
       const folder = GOOGLE_DRIVE_CONFIG.FOLDERS.find(f => !['all', 'latest'].includes(f.id));
       if (!folder) return;
@@ -146,13 +184,24 @@ function App() {
       const res = await axios.get(`https://www.googleapis.com/drive/v3/files/${folderId}`, {
         params: { fields: 'capabilities(canAddChildren, canEdit)' },
         headers: { Authorization: `Bearer ${accessToken}` },
-        // This prevents Axios from throwing an error on 401/403, 
-        // which helps keep the console cleaner in some environments.
         validateStatus: (status) => (status >= 200 && status < 300) || status === 401 || status === 403
       });
 
+      // Si el token expiró (401) o se denegaron permisos (403)
       if (res.status === 401 || res.status === 403) {
+        console.warn('El token de Google expiró o es inválido. Forzando re-autenticación...');
+
+        // 1. Quitar los permisos de Admin
         setIsAdmin(false);
+
+        // 2. Limpiar el estado de usuario y el almacenamiento local
+        setUser(null);
+        localStorage.removeItem('google_user');
+
+        // 3. (Opcional) Si se le pasa la función login(), vuelve a abrir el diálogo de inicio de sesión
+        if (promptLogin && typeof promptLogin === 'function') {
+          promptLogin();
+        }
       } else {
         setIsAdmin(res.data.capabilities?.canAddChildren || false);
       }
@@ -177,7 +226,14 @@ function App() {
   useEffect(() => {
     const savedUser = localStorage.getItem('google_user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser);
+
+      // Validamos el estado del token al cargar
+      if (parsedUser.access_token) {
+        // Pasamos `login` si quieres que inmediatamente le pida volver a autenticarse
+        checkAdminStatus(parsedUser.access_token, 'login');
+      }
     }
   }, []);
 
@@ -302,6 +358,8 @@ function App() {
         isZoomed={isZoomed}
         setIsZoomed={setIsZoomed}
         activeCategory={activeCategory}
+        isAdmin={isAdmin}
+        onEditProduct={handleEditProduct}
       />
 
       <AnimatePresence>
@@ -339,8 +397,10 @@ function App() {
         {showAdmin && user && (
           <AdminPanel
             user={user}
+            initialProductToEdit={productToEdit}
             onClose={() => {
               setShowAdmin(false);
+              setProductToEdit(null);
               setProductsCache({}); // Clear all cache
               setTimeout(() => loadProducts(false, true), 100); // Force reload active category
             }}

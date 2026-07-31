@@ -1,31 +1,37 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ZoomIn, ShoppingBag, MessageCircle } from 'lucide-react';
+import { X, ZoomIn, ShoppingBag, MessageCircle, File, Edit } from 'lucide-react';
 import { SiFacebook, SiWhatsapp } from '@icons-pack/react-simple-icons';
 
 import { CONTACT_CONFIG } from '../config';
 import { parseDescription } from '../utils/helpers';
 
-const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, setSelectedVariant, isZoomed, setIsZoomed, activeCategory }) => {
+const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, setSelectedVariant, isZoomed, setIsZoomed, activeCategory, isAdmin, onEditProduct }) => {
     if (!selectedProduct) return null;
 
     const selectedProductData = parseDescription(selectedProduct.description);
 
-    const createMessage = (productName, variant = null, imageUrl = null) => {
+    const createMessage = (productName, variant = null, imageUrl = null, productId = null) => {
         let messageBody = `${CONTACT_CONFIG.MESSAGE} \n${productName}`;
         if (variant) messageBody += ` (${variant.name} - ${variant.price.startsWith('$') ? variant.price : `$${variant.price}`})`;
-        if (imageUrl) messageBody += `\n\nReferencia del producto: ${imageUrl}`;
+
+        if (productId) {
+            const referenceUrl = `${window.location.origin}${window.location.pathname}?q=${productId}`;
+            messageBody += `\n\nReferencia del producto: ${referenceUrl}`;
+        } else if (imageUrl) {
+            messageBody += `\n\nReferencia del producto: ${imageUrl}`;
+        }
 
         const message = encodeURIComponent(messageBody);
         return message;
     }
 
-    const handleWhatsApp = (productName, variant = null, imageUrl = null) => {
-        const message = createMessage(productName, variant, imageUrl);
+    const handleWhatsApp = (productName, variant = null, imageUrl = null, productId = null) => {
+        const message = createMessage(productName, variant, imageUrl, productId);
         window.open(`https://wa.me/${CONTACT_CONFIG.WHATSAPP}?text=${message}`, '_blank');
     };
 
-    const handleFacebook = (productName, variant = null, imageUrl = null) => {
-        const message = createMessage(productName, variant, imageUrl);
+    const handleFacebook = (productName, variant = null, imageUrl = null, productId = null) => {
+        const message = createMessage(productName, variant, imageUrl, productId);
         window.open(`https://m.me/${CONTACT_CONFIG.FACEBOOK_PAGE}?text=${message}`, '_blank');
     };
 
@@ -108,72 +114,115 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                     </p>
 
                                     <div className="mt-auto space-y-4">
-                                        {selectedProductData.variants.length > 0 ? (
-                                            <div className="space-y-3 mb-2">
-                                                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest opacity-70 ml-1">Selecciona una opción</p>
-                                                <div className="grid grid-cols-1 gap-3">
-                                                    {selectedProductData.variants.map((v, i) => (
-                                                        <button
-                                                            key={i}
-                                                            onClick={() => setSelectedVariant(v)}
-                                                            className={`p-5 rounded-2xl flex items-center justify-between border transition-all duration-300 ${selectedVariant?.name === v.name
-                                                                ? 'bg-cat-contrast/10 border-cat-contrast shadow-md scale-[1.02]'
-                                                                : 'bg-cat-darkest/10 border-light/10 text-light hover:border-cat-contrast'
-                                                                }`}
-                                                        >
-                                                            <div className="flex items-center gap-3">
-                                                                <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${selectedVariant?.name === v.name ? 'border-cat-contrast bg-cat-contrast' : 'border-slate-300'
-                                                                    }`}>
-                                                                    {selectedVariant?.name === v.name && <div className="w-2 h-2 bg-white rounded-full" />}
+                                        {isAdmin ? (
+                                            <>
+                                                {selectedProductData.variants.length > 0 && (
+                                                    <div className="space-y-3 mb-2">
+                                                        <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest opacity-70 ml-1">Variantes registradas</p>
+                                                        <div className="grid grid-cols-1 gap-3">
+                                                            {selectedProductData.variants.map((v, i) => (
+                                                                <div
+                                                                    key={i}
+                                                                    className="p-5 rounded-2xl flex items-center justify-between border bg-cat-darkest/10 border-light/10 text-light"
+                                                                >
+                                                                    <span className="font-bold text-cat-light/80">{v.name}</span>
+                                                                    <span className="font-black text-lg text-cat-contrast">{v.price.startsWith('$') ? v.price : `$${v.price}`}</span>
                                                                 </div>
-                                                                <span className={`font-bold transition-colors ${selectedVariant?.name === v.name ? 'text-cat-contrast' : 'text-cat-light/50'
-                                                                    } text-left`}>{v.name}</span>
-                                                            </div>
-                                                            <span className={`font-black text-lg ${selectedVariant?.name === v.name ? 'text-cat-contrast' : 'text-cat-contrast'
-                                                                }`}>{v.price.startsWith('$') ? v.price : `$${v.price}`}</span>
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                 <div className="pt-2 flex flex-col gap-3">
+                                                     {selectedProductData.fileUrl && (
+                                                         <a
+                                                             href={selectedProductData.fileUrl}
+                                                             target="_blank"
+                                                             rel="noopener noreferrer"
+                                                             className="w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight bg-cat-contrast text-cat-light hover:bg-cat-contrast/90 active:scale-[0.98]"
+                                                         >
+                                                             <File size={24} />
+                                                             Ir al archivo
+                                                         </a>
+                                                     )}
+                                                     <button
+                                                         onClick={() => onEditProduct(selectedProduct)}
+                                                         className="w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight bg-cat-teal-dark text-white hover:bg-cat-teal-dark/95 active:scale-[0.98]"
+                                                     >
+                                                         <Edit size={24} />
+                                                         Editar Producto
+                                                     </button>
+                                                 </div>
+                                             </>
                                         ) : (
-                                            <div className="bg-[#f8fafc] p-8 rounded-[2.5rem] flex items-center justify-between border border-slate-100 shadow-inner mb-2">
-                                                <div>
-                                                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1.5 opacity-70">Precio sugerido</p>
-                                                    <p className="text-4xl font-black text-cat-teal-dark">$---</p>
+                                            <>
+                                                {selectedProductData.variants.length > 0 ? (
+                                                    <div className="space-y-3 mb-2">
+                                                        <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest opacity-70 ml-1">Selecciona una opción</p>
+                                                        <div className="grid grid-cols-1 gap-3">
+                                                            {selectedProductData.variants.map((v, i) => (
+                                                                <button
+                                                                    key={i}
+                                                                    onClick={() => setSelectedVariant(v)}
+                                                                    className={`p-5 rounded-2xl flex items-center justify-between border transition-all duration-300 ${selectedVariant?.name === v.name
+                                                                        ? 'bg-cat-contrast/10 border-cat-contrast shadow-md scale-[1.02]'
+                                                                        : 'bg-cat-darkest/10 border-light/10 text-light hover:border-cat-contrast'
+                                                                        }`}
+                                                                >
+                                                                    <div className="flex items-center gap-3">
+                                                                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${selectedVariant?.name === v.name ? 'border-cat-contrast bg-cat-contrast' : 'border-slate-300'
+                                                                            }`}>
+                                                                            {selectedVariant?.name === v.name && <div className="w-2 h-2 bg-white rounded-full" />}
+                                                                        </div>
+                                                                        <span className={`font-bold transition-colors ${selectedVariant?.name === v.name ? 'text-cat-contrast' : 'text-cat-light/50'
+                                                                            } text-left`}>{v.name}</span>
+                                                                    </div>
+                                                                    <span className={`font-black text-lg ${selectedVariant?.name === v.name ? 'text-cat-contrast' : 'text-cat-contrast'
+                                                                        }`}>{v.price.startsWith('$') ? v.price : `$${v.price}`}</span>
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="bg-[#f8fafc] p-8 rounded-[2.5rem] flex items-center justify-between border border-slate-100 shadow-inner mb-2">
+                                                        <div>
+                                                            <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1.5 opacity-70">Precio sugerido</p>
+                                                            <p className="text-4xl font-black text-cat-teal-dark">$---</p>
+                                                        </div>
+                                                        <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-md text-cat-contrast border border-slate-50">
+                                                            <ShoppingBag size={32} />
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                <div className="flex flex-col gap-3">
+                                                    {import.meta.env.VITE_WHATSAPP_NUMBER && <button
+                                                        onClick={() => handleWhatsApp(selectedProductData.title || selectedProduct.name, selectedVariant, selectedProduct.image, selectedProduct.id)}
+                                                        className={`w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight ${selectedProductData.variants.length > 0 && !selectedVariant
+                                                            ? 'bg-cat-darkest/40 border border-cat-light/10 text-cat-light/10 cursor-not-allowed shadow-none'
+                                                            : 'bg-cat-teal-dark text-white shadow-cat-teal-dark/30 hover:bg-cat-teal-dark/95 active:scale-[0.98]'
+                                                            }`}
+                                                        disabled={selectedProductData.variants.length > 0 && !selectedVariant}
+                                                    >
+                                                        <SiWhatsapp size={24} />
+                                                        {selectedProductData.variants.length > 0 && !selectedVariant
+                                                            ? 'Selecciona una opción'
+                                                            : 'Consultar por WhatsApp'}
+                                                    </button>}
+
+                                                    {import.meta.env.VITE_FACEBOOK_PAGE && <button
+                                                        onClick={() => handleFacebook(selectedProductData.title || selectedProduct.name, selectedVariant, selectedProduct.image, selectedProduct.id)}
+                                                        className={`w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight ${selectedProductData.variants.length > 0 && !selectedVariant
+                                                            ? 'bg-cat-darkest/40 border border-cat-light/10 text-cat-light/10 cursor-not-allowed shadow-none'
+                                                            : 'bg-[#0084FF]/10 text-[#0084FF] border border-[#0084FF]/20 hover:bg-[#0084FF]/20 active:scale-[0.98]'
+                                                            }`}
+                                                        disabled={selectedProductData.variants.length > 0 && !selectedVariant}
+                                                    >
+                                                        <SiFacebook size={24} />
+                                                        Consultar por Facebook
+                                                    </button>}
                                                 </div>
-                                                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-md text-cat-contrast border border-slate-50">
-                                                    <ShoppingBag size={32} />
-                                                </div>
-                                            </div>
+                                            </>
                                         )}
-
-                                        <div className="flex flex-col gap-3">
-                                            {import.meta.env.VITE_WHATSAPP_NUMBER && <button
-                                                onClick={() => handleWhatsApp(selectedProductData.title || selectedProduct.name, selectedVariant, selectedProduct.image)}
-                                                className={`w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight ${selectedProductData.variants.length > 0 && !selectedVariant
-                                                    ? 'bg-cat-darkest/40 border border-cat-light/10 text-cat-light/10 cursor-not-allowed shadow-none'
-                                                    : 'bg-cat-teal-dark text-white shadow-cat-teal-dark/30 hover:bg-cat-teal-dark/95 active:scale-[0.98]'
-                                                    }`}
-                                                disabled={selectedProductData.variants.length > 0 && !selectedVariant}
-                                            >
-                                                <SiWhatsapp size={24} />
-                                                {selectedProductData.variants.length > 0 && !selectedVariant
-                                                    ? 'Selecciona una opción'
-                                                    : 'Consultar por WhatsApp'}
-                                            </button>}
-
-                                            {import.meta.env.VITE_FACEBOOK_PAGE && <button
-                                                onClick={() => handleFacebook(selectedProductData.title || selectedProduct.name, selectedVariant, selectedProduct.image)}
-                                                className={`w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight ${selectedProductData.variants.length > 0 && !selectedVariant
-                                                    ? 'bg-cat-darkest/40 border border-cat-light/10 text-cat-light/10 cursor-not-allowed shadow-none'
-                                                    : 'bg-[#0084FF]/10 text-[#0084FF] border border-[#0084FF]/20 hover:bg-[#0084FF]/20 active:scale-[0.98]'
-                                                    }`}
-                                                disabled={selectedProductData.variants.length > 0 && !selectedVariant}
-                                            >
-                                                <SiFacebook size={24} />
-                                                Consultar por Facebook
-                                            </button>}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
