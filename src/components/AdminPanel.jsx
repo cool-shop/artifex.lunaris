@@ -32,7 +32,8 @@ const AdminPanel = ({ user, onClose }) => {
         description: '',
         variants: [{ name: '', price: '' }],
         file: null,
-        categoryId: ''
+        categoryId: '',
+        fileUrl: ''
     });
 
     const folders = GOOGLE_DRIVE_CONFIG.FOLDERS.filter(f => !['all', 'latest'].includes(f.id));
@@ -77,13 +78,38 @@ const AdminPanel = ({ user, onClose }) => {
     };
 
     const buildFullDescription = () => {
-        let desc = `# ${formData.title}\n\n${formData.description}\n\n`;
-        formData.variants.forEach(v => {
-            if (v.name && v.price) {
-                desc += `> ${v.name} | ${v.price}\n`;
-            }
-        });
-        return desc.trim();
+        const { title = '', description = '', variants = [], fileUrl = '' } = formData;
+
+        // 1. Mapeamos las variantes al nuevo formato [{"Nombre": Precio}]
+        const formattedVariants = variants
+            .filter(v => v.name && v.price !== undefined && v.price !== '')
+            .map(v => ({
+                [v.name.trim()]: v.price
+            }));
+
+        // 2. Construimos el objeto de datos
+        const jsonData = {
+            variantes: formattedVariants,
+            extra: btoa(fileUrl || '')
+        };
+
+        // 3. Convertimos el objeto a un string JSON bien formateado (con 2 espacios de sangría)
+        const jsonBlock = JSON.stringify(jsonData, null, 2);
+
+        // 4. Armamos el Markdown final
+        let fullMarkdown = '';
+
+        if (title.trim()) {
+            fullMarkdown += `# ${title.trim()}\n\n`;
+        }
+
+        if (description.trim()) {
+            fullMarkdown += `${description.trim()}\n\n`;
+        }
+
+        fullMarkdown += `\`\`\`JSON\n${jsonBlock}\n\`\`\``;
+
+        return fullMarkdown.trim();
     };
 
     const handleUpload = async (e) => {
@@ -142,6 +168,7 @@ const AdminPanel = ({ user, onClose }) => {
             setMode('list');
             resetForm();
         } catch (err) {
+            console.error(err);
             showMsg('error', 'Error al actualizar');
         } finally {
             setActionLoading(false);
@@ -171,6 +198,7 @@ const AdminPanel = ({ user, onClose }) => {
             description: parsed.description || '',
             variants: parsed.variants.length > 0 ? parsed.variants : [{ name: '', price: '' }],
             file: null,
+            fileUrl: parsed.fileUrl || '',
             categoryId: selectedFolder?.id || ''
         });
         setMode('edit');
@@ -182,6 +210,7 @@ const AdminPanel = ({ user, onClose }) => {
             description: '',
             variants: [{ name: '', price: '' }],
             file: null,
+            fileUrl: '',
             categoryId: selectedFolder?.id || folders[0]?.id || ''
         });
         setEditingProduct(null);
@@ -439,6 +468,18 @@ const AdminPanel = ({ user, onClose }) => {
                                         </div>
                                     ))}
                                 </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-cat-light/50 ml-1">Link a Recursos (Este enlace solo será visto por el administrador)</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ej: https://t.me/c/ejemplo_channel/1"
+                                    value={formData.fileUrl}
+                                    onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+                                    className="w-full bg-cat-dark text-cat-light placeholder-cat-light/30 rounded-2xl p-4 border border-cat-light/10 focus:outline-none focus:ring-2 focus:ring-cat-contrast/20 font-bold"
+
+                                />
                             </div>
 
                             {/* Submit Button */}
