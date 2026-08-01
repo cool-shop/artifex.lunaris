@@ -326,7 +326,7 @@ function App() {
           {loading ? (
             <LoadingSpinner fullPage message="Cargando catálogo..." />
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 sm:gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10">
               <AnimatePresence mode="popLayout">
                 {filteredProducts.map((product) => (
                   <ProductCard

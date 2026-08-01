@@ -13,7 +13,7 @@ const ProductCard = ({ product, setSelectedProduct }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             onClick={() => setSelectedProduct(product)}
-            className="card-premium p-4 flex flex-col h-full hover:shadow-2xl hover:bg-cat-contrast/30 transition-all group cursor-pointer duration-500"
+            className="card-premium p-2 flex flex-col h-full hover:shadow-2xl hover:bg-cat-contrast/30 transition-all group cursor-pointer duration-500"
         >
             <div className="aspect-square rounded-[2rem] overflow-hidden mb-5 relative group-hover:shadow-lg transition-all duration-500">
                 <img
@@ -37,7 +37,7 @@ const ProductCard = ({ product, setSelectedProduct }) => {
                         {displayPrice.startsWith('$') ? displayPrice : `$${displayPrice}`}
                     </span>
                     <div className="bg-slate-50 p-2 rounded-full text-cat-contrast group-hover:bg-cat-contrast group-hover:text-white transition-all shadow-inner">
-                        <ArrowRight size={20} />
+                        <ArrowRight size={30} />
                     </div>
                 </div>
             </div>

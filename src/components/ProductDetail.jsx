@@ -132,34 +132,36 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                                         </div>
                                                     </div>
                                                 )}
-                                                 <div className="pt-2 flex flex-col gap-3">
-                                                     {selectedProductData.fileUrl && (
-                                                         <a
-                                                             href={selectedProductData.fileUrl}
-                                                             target="_blank"
-                                                             rel="noopener noreferrer"
-                                                             className="w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight bg-cat-contrast text-cat-light hover:bg-cat-contrast/90 active:scale-[0.98]"
-                                                         >
-                                                             <File size={24} />
-                                                             Ir al archivo
-                                                         </a>
-                                                     )}
-                                                     <button
-                                                         onClick={() => onEditProduct(selectedProduct)}
-                                                         className="w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight bg-cat-teal-dark text-white hover:bg-cat-teal-dark/95 active:scale-[0.98]"
-                                                     >
-                                                         <Edit size={24} />
-                                                         Editar Producto
-                                                     </button>
-                                                 </div>
-                                             </>
+                                                <div className="pt-2 flex flex-col gap-3">
+                                                    {selectedProductData.fileUrl && (
+                                                        <a
+                                                            href={selectedProductData.fileUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight bg-cat-contrast text-cat-light hover:bg-cat-contrast/90 active:scale-[0.98]"
+                                                        >
+                                                            <File size={24} />
+                                                            Ir al archivo
+                                                        </a>
+                                                    )}
+                                                    <button
+                                                        onClick={() => onEditProduct(selectedProduct)}
+                                                        className="w-full p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl transition-all text-lg uppercase tracking-tight bg-cat-teal-dark text-white hover:bg-cat-teal-dark/95 active:scale-[0.98]"
+                                                    >
+                                                        <Edit size={24} />
+                                                        Editar Producto
+                                                    </button>
+                                                </div>
+                                            </>
                                         ) : (
                                             <>
+
                                                 {selectedProductData.variants.length > 0 ? (
                                                     <div className="space-y-3 mb-2">
                                                         <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest opacity-70 ml-1">Selecciona una opción</p>
                                                         <div className="grid grid-cols-1 gap-3">
                                                             {selectedProductData.variants.map((v, i) => (
+
                                                                 <button
                                                                     key={i}
                                                                     onClick={() => setSelectedVariant(v)}
@@ -179,6 +181,7 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                                                     <span className={`font-black text-lg ${selectedVariant?.name === v.name ? 'text-cat-contrast' : 'text-cat-contrast'
                                                                         }`}>{v.price.startsWith('$') ? v.price : `$${v.price}`}</span>
                                                                 </button>
+
                                                             ))}
                                                         </div>
                                                     </div>
