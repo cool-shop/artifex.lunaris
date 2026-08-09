@@ -29,12 +29,12 @@ const ProductCard = ({ product, setSelectedProduct }) => {
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
             </div>
             <div className="flex-1 px-1">
-                <h4 className="text-cat-contrast font-black text-base sm:text-lg mb-2 line-clamp-2 leading-tight group-hover:text-cat-light transition-colors uppercase tracking-tight">
+                <h4 className="text-cat-contrast font-black text-4xl sm:text-4xl mb-2 line-clamp-2 leading-tight group-hover:text-cat-light transition-colors uppercase tracking-tight">
                     {meta.title || product.name}
                 </h4>
                 <div className="flex items-center justify-between mt-auto pt-2">
                     <span className="text-cat-light group-hover:text-cat-contrast font-black text-lg sm:text-xl transition-colors duration-500">
-                        {displayPrice.startsWith('$') ? displayPrice : `$${displayPrice}`}
+                        {displayPrice.startsWith('$') ? displayPrice : displayPrice === ' ' ? '' : `$${displayPrice}`}
                     </span>
                     <div className="bg-slate-50 p-2 rounded-full text-cat-contrast group-hover:bg-cat-contrast group-hover:text-white transition-all shadow-inner">
                         <ArrowRight size={30} />

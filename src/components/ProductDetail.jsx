@@ -12,7 +12,7 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
 
     const createMessage = (productName, variant = null, imageUrl = null, productId = null) => {
         let messageBody = `${CONTACT_CONFIG.MESSAGE} \n${productName}`;
-        if (variant) messageBody += ` (${variant.name} - ${variant.price.startsWith('$') ? variant.price : `$${variant.price}`})`;
+        if (variant) messageBody += ` (${variant.name} - ${variant.price.startsWith('$') ? variant.price : variant.price === ' ' ? '' : `$${variant.price}`})`;
 
         if (productId) {
             const referenceUrl = `${window.location.origin}${window.location.pathname}?q=${productId}`;
@@ -157,6 +157,7 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                             <>
 
                                                 {selectedProductData.variants.length > 0 ? (
+
                                                     <div className="space-y-3 mb-2">
                                                         <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest opacity-70 ml-1">Selecciona una opción</p>
                                                         <div className="grid grid-cols-1 gap-3">
@@ -179,7 +180,7 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                                                             } text-left`}>{v.name}</span>
                                                                     </div>
                                                                     <span className={`font-black text-lg ${selectedVariant?.name === v.name ? 'text-cat-contrast' : 'text-cat-contrast'
-                                                                        }`}>{v.price.startsWith('$') ? v.price : `$${v.price}`}</span>
+                                                                        }`}>{v.price.startsWith('$') ? v.price : v.price === ' ' ? '' : `$${v.price}`}</span>
                                                                 </button>
 
                                                             ))}

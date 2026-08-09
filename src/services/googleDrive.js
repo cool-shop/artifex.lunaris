@@ -14,7 +14,7 @@ export const cleanFolderId = (folderId) => {
     return cleanId;
 };
 
-export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12, orderBy = 'name') => {
+export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12, orderBy = 'recency') => {
     if (folderId === 'all' || folderId === 'latest') {
         const isLatest = folderId === 'latest';
         // To avoid 403 Forbidden with API Keys, we fetch folders individually and merge
@@ -35,7 +35,7 @@ export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12
                 validFolders.map(f => {
                     const folderToken = tokens[f.id] || null;
                     if (pageToken && !folderToken) return Promise.resolve({ files: [], nextPageToken: null });
-                    return fetchFolderFiles(f.id, folderToken, isLatest ? 6 : pageSize, isLatest ? 'createdTime desc' : 'name');
+                    return fetchFolderFiles(f.id, folderToken, isLatest ? 6 : pageSize, isLatest ? 'createdTime desc' : 'recency');
                 })
             );
 
