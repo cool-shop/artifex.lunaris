@@ -20,7 +20,7 @@ export const GOOGLE_DRIVE_CONFIG = {
             image: 'https://lh3.googleusercontent.com/u/0/d/11cDVrtab46rvY4aqiIZxwJmkaHsi_FzU=s400'
         },
         {
-            id: 'https://drive.google.com/drive/folders/148xla20sXd87q23tXjf8WFIvgJr4pA2x',
+            id: 'https://drive.google.com/drive/folders/1XyAlN20PN2LKBzs_PKPKLukCAxbJ5J9l',
             name: 'Videojuegos',
             icon: 'Controller',
             image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'

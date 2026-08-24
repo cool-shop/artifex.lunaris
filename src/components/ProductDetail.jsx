@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ZoomIn, ShoppingBag, MessageCircle, File, Edit } from 'lucide-react';
 import { SiFacebook, SiWhatsapp } from '@icons-pack/react-simple-icons';
@@ -6,6 +7,19 @@ import { CONTACT_CONFIG } from '../config';
 import { parseDescription } from '../utils/helpers';
 
 const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, setSelectedVariant, isZoomed, setIsZoomed, activeCategory, isAdmin, onEditProduct }) => {
+    useEffect(() => {
+        if (selectedProduct) {
+            const productData = parseDescription(selectedProduct.description);
+            if (productData && productData.variants && productData.variants.length > 0) {
+                setSelectedVariant(productData.variants[0]);
+            } else {
+                setSelectedVariant(null);
+            }
+        } else {
+            setSelectedVariant(null);
+        }
+    }, [selectedProduct, setSelectedVariant]);
+
     if (!selectedProduct) return null;
 
     const selectedProductData = parseDescription(selectedProduct.description);
