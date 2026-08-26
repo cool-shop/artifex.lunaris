@@ -4,7 +4,7 @@ import { parseDescription } from '../utils/helpers';
 
 const ProductCard = ({ product, setSelectedProduct }) => {
     const meta = parseDescription(product.description);
-    const displayPrice = meta.variants.length > 0 ? meta.variants[0].price : '---';
+    const displayPrice = meta.variants.length > 0 ? meta.variants[0].price : ' ';
 
     return (
         <motion.div

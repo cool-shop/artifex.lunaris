@@ -481,7 +481,6 @@ const AdminPanel = ({ user, onClose, initialProductToEdit }) => {
                                                 value={v.name}
                                                 onChange={(e) => updateVariant(i, 'name', e.target.value)}
                                                 className="flex-1 bg-cat-dark text-cat-light placeholder-cat-light/30 rounded-xl p-3 border border-cat-light/10 text-sm font-bold"
-                                                required
                                             />
                                             <input
                                                 type="text"
@@ -489,7 +488,6 @@ const AdminPanel = ({ user, onClose, initialProductToEdit }) => {
                                                 value={v.price}
                                                 onChange={(e) => updateVariant(i, 'price', e.target.value)}
                                                 className="w-24 bg-cat-dark text-cat-contrast placeholder-cat-light/30 rounded-xl p-3 border border-cat-light/10 text-sm font-black"
-                                                required
                                             />
                                             {formData.variants.length > 1 && (
                                                 <button type="button" onClick={() => handleRemoveVariant(i)} className="text-cat-light/30 hover:text-red-500 p-2">

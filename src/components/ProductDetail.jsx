@@ -170,8 +170,7 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                         ) : (
                                             <>
 
-                                                {selectedProductData.variants.length > 0 ? (
-
+                                                {selectedProductData.variants.length > 0 && (
                                                     <div className="space-y-3 mb-2">
                                                         <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest opacity-70 ml-1">Selecciona una opción</p>
                                                         <div className="grid grid-cols-1 gap-3">
@@ -198,16 +197,6 @@ const ProductDetail = ({ selectedProduct, setSelectedProduct, selectedVariant, s
                                                                 </button>
 
                                                             ))}
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    <div className="bg-[#f8fafc] p-8 rounded-[2.5rem] flex items-center justify-between border border-slate-100 shadow-inner mb-2">
-                                                        <div>
-                                                            <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1.5 opacity-70">Precio sugerido</p>
-                                                            <p className="text-4xl font-black text-cat-teal-dark">$---</p>
-                                                        </div>
-                                                        <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-md text-cat-contrast border border-slate-50">
-                                                            <ShoppingBag size={32} />
                                                         </div>
                                                     </div>
                                                 )}
