@@ -14,6 +14,12 @@ export const cleanFolderId = (folderId) => {
     return cleanId;
 };
 
+// Helper to generate a permanent non-expiring image URL from a Google Drive file ID
+export const getPermanentImageUrl = (fileId, size = 1000) => {
+    if (!fileId) return null;
+    return `https://lh3.googleusercontent.com/d/${fileId}=s${size}`;
+};
+
 export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12, orderBy = 'recency') => {
     if (folderId === 'all' || folderId === 'latest') {
         const isLatest = folderId === 'latest';
@@ -99,9 +105,9 @@ export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12
             name: file.name.split('.')[0],
             description: file.description || '',
             createdTime: file.createdTime,
-            // Use high-res thumbnail
-            image: file.thumbnailLink ? file.thumbnailLink.replace(/=s\d+$/, '=s1000') : null,
-            thumbnail: file.thumbnailLink,
+            // Use permanent Google Drive URL format based on file ID
+            image: getPermanentImageUrl(file.id, 1000),
+            thumbnail: getPermanentImageUrl(file.id, 400),
             driveUrl: `https://drive.google.com/open?id=${file.id}`
         }));
 
@@ -206,8 +212,8 @@ export const fetchFileById = async (fileId) => {
             name: file.name.split('.')[0],
             description: file.description || '',
             createdTime: file.createdTime,
-            image: file.thumbnailLink ? file.thumbnailLink.replace(/=s\d+$/, '=s1000') : null,
-            thumbnail: file.thumbnailLink,
+            image: getPermanentImageUrl(file.id, 1000),
+            thumbnail: getPermanentImageUrl(file.id, 400),
             driveUrl: `https://drive.google.com/open?id=${file.id}`,
             parents: file.parents || []
         };

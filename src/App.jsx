@@ -2,8 +2,18 @@ import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { GOOGLE_DRIVE_CONFIG } from './config';
-import { fetchFolderFiles, fetchFileById } from './services/googleDrive';
+import { fetchFolderFiles, fetchFileById, getPermanentImageUrl } from './services/googleDrive';
 import { parseDescription } from './utils/helpers';
+
+// Helper to sanitize product image links into permanent non-expiring URLs
+const ensurePermanentImage = (product) => {
+  if (!product || !product.id) return product;
+  return {
+    ...product,
+    image: getPermanentImageUrl(product.id, 1000),
+    thumbnail: getPermanentImageUrl(product.id, 400)
+  };
+};
 
 // Components
 import CategoryHeader from './components/CategoryHeader';
@@ -39,7 +49,13 @@ function App() {
   const [productToEdit, setProductToEdit] = useState(null);
   const [recentlyViewed, setRecentlyViewed] = useState(() => {
     const saved = localStorage.getItem(`recently_viewed_${import.meta.env.VITE_APP}`);
-    return saved ? JSON.parse(saved) : [];
+    if (!saved) return [];
+    try {
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed.map(ensurePermanentImage) : [];
+    } catch (e) {
+      return [];
+    }
   });
   const loaderRef = useRef(null);
   const searchRef = useRef(null);
@@ -56,9 +72,10 @@ function App() {
   const handleProductSelect = (product) => {
     setSelectedProduct(product);
     if (product) {
+      const normalizedProduct = ensurePermanentImage(product);
       setRecentlyViewed(prev => {
         const filtered = prev.filter(p => p.id !== product.id);
-        const updated = [product, ...filtered].slice(0, 20); // Keep last 20
+        const updated = [normalizedProduct, ...filtered].slice(0, 20); // Keep last 20
         localStorage.setItem(`recently_viewed_${import.meta.env.VITE_APP}`, JSON.stringify(updated));
         return updated;
       });
