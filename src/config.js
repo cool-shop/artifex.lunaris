@@ -5,7 +5,7 @@ export const APP_CONFIG = {
     META_DESCRIPTION: 'Catálogo de impresión 3D de alta gama y figuras para pintores y jugadores exigentes.',
     LOGO: `${import.meta.env.BASE_URL}artifex_lunaris_circular.svg`,
     LOGO_SM: `${import.meta.env.BASE_URL}artifex_lunaris_circular.svg`,
-    LOGO_NOMBRE: `${import.meta.env.BASE_URL}artifex_lunaris_letras_simple.svg`,
+    LOGO_NOMBRE: `${import.meta.env.BASE_URL}artifex_lunaris_logo_horizontal.svg`,
     LOGO_SIMPLE: `${import.meta.env.BASE_URL}artifex_lunaris_simple_sm.svg`,
     FAVICON: `${import.meta.env.BASE_URL}artifex_lunaris_sm_logo.svg`
 };
