@@ -1,6 +1,5 @@
-
 import { SiFacebook, SiInstagram, SiWhatsapp } from '@icons-pack/react-simple-icons';
-import { BANNER_CONFIG } from '../config';
+import { BANNER_CONFIG, BRAND_TEXTS } from '../config';
 
 const HeroBanner = ({ onActionClick }) => {
     return (
@@ -9,9 +8,9 @@ const HeroBanner = ({ onActionClick }) => {
                 <div className="z-10 w-2/3 md:w-3/5">
                     <div className="py-5">
                         <h3 className="text-cat-light text-xl font-black mb-0 leading-tight sm:text-4xl text-center">
-                            ¡Únete a la Comunidad!
+                            {BRAND_TEXTS.HERO.title}
                         </h3>
-                        <p className="text-white/60 font-medium text-center">Síguenos para conocer nuevos lanzamientos, guías de pintura y procesos en el taller.</p>
+                        <p className="text-white/60 font-medium text-center">{BRAND_TEXTS.HERO.subtitle}</p>
                     </div>
                     <div className="flex gap-4 mx-auto justify-evenly">
                         {import.meta.env.VITE_WHATSAPP_NUMBER && <a href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-contrast/70 hover:bg-cat-contrast rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">

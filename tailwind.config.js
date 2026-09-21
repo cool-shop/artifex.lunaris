@@ -7,13 +7,13 @@ export default {
     theme: {
         extend: {
             colors: {
-                'cat-darkest': '#1A0425',
-                'cat-dark': '#320946',
-                'cat-contrast': '#dd1155',
-                'cat-light': '#fdfffc',
-                'cat-contrast-light': '#F8B4CC',
-                'cat-teal-light': '#1cd6d9',
-                'cat-teal-dark': '#0f7173',
+                'cat-darkest': 'rgb(var(--color-cat-darkest) / <alpha-value>)',
+                'cat-dark': 'rgb(var(--color-cat-dark) / <alpha-value>)',
+                'cat-contrast': 'rgb(var(--color-cat-contrast) / <alpha-value>)',
+                'cat-light': 'rgb(var(--color-cat-light) / <alpha-value>)',
+                'cat-contrast-light': 'rgb(var(--color-cat-contrast-light) / <alpha-value>)',
+                'cat-teal-light': 'rgb(var(--color-cat-teal-light) / <alpha-value>)',
+                'cat-teal-dark': 'rgb(var(--color-cat-teal-dark) / <alpha-value>)',
             },
             fontFamily: {
                 outfit: ['Outfit', 'sans-serif'],

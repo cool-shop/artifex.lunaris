@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
-import { GOOGLE_DRIVE_CONFIG } from './config';
+import { GOOGLE_DRIVE_CONFIG, APP_CONFIG } from './config';
 import { fetchFolderFiles, fetchFileById, getPermanentImageUrl } from './services/googleDrive';
 import { parseDescription } from './utils/helpers';
 
@@ -130,6 +130,23 @@ function App() {
   };
 
   useEffect(() => {
+    if (APP_CONFIG.META_TITLE) {
+      document.title = APP_CONFIG.META_TITLE;
+    }
+    const updateMetaTag = (selector, content) => {
+      if (!content) return;
+      let el = document.querySelector(selector);
+      if (el) el.setAttribute('content', content);
+    };
+    updateMetaTag('meta[property="og:title"]', APP_CONFIG.META_TITLE);
+    updateMetaTag('meta[name="title"]', APP_CONFIG.META_TITLE);
+    updateMetaTag('meta[property="twitter:title"]', APP_CONFIG.META_TITLE);
+    updateMetaTag('meta[property="og:description"]', APP_CONFIG.META_DESCRIPTION);
+    updateMetaTag('meta[name="description"]', APP_CONFIG.META_DESCRIPTION);
+    updateMetaTag('meta[property="twitter:description"]', APP_CONFIG.META_DESCRIPTION);
+    updateMetaTag('meta[property="og:image"]', APP_CONFIG.LOGO);
+    updateMetaTag('meta[property="twitter:image"]', APP_CONFIG.LOGO);
+
     // Force scroll to top on page refresh/initial mount
     window.scrollTo(0, 0);
     // Prevent browser from restoring scroll position

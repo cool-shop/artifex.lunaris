@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion';
 import { ChevronLeft, Heart, Target, Star } from 'lucide-react';
 import { SiFacebook, SiInstagram, SiWhatsapp } from '@icons-pack/react-simple-icons';
-import { APP_CONFIG } from '../config';
+import { APP_CONFIG, BRAND_TEXTS } from '../config';
 
 const BrandInfo = ({ onClose }) => {
+    const about = BRAND_TEXTS.ABOUT;
+    const icons = [Heart, Target, Star];
+    const iconColors = ['text-[#FF0000]', 'text-blue-500', 'text-yellow-500'];
+
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -20,7 +24,7 @@ const BrandInfo = ({ onClose }) => {
                 >
                     <ChevronLeft size={24} />
                 </button>
-                <img src={APP_CONFIG.LOGO_NOMBRE} alt="artifex lunaris" className="w-60 h-auto flex items-center justify-center mx-auto transform" />
+                <img src={APP_CONFIG.LOGO_NOMBRE} alt={APP_CONFIG.NAME} className="w-60 h-auto flex items-center justify-center mx-auto transform" />
                 <div className="w-12" /> {/* Spacer for centering */}
             </div>
 
@@ -30,11 +34,11 @@ const BrandInfo = ({ onClose }) => {
                 <div className="relative rounded-[3rem] overflow-hidden bg-cat-darkest/85 p-12 mb-16 text-center">
                     <div className="relative z-10">
                         <div className="">
-                            <img src={APP_CONFIG.LOGO} alt="artifex lunaris" className="sm:w-48 sm:h-48 w-48 h-48 rounded-[8rem] flex items-center justify-center text-white shadow-2xl shadow-cat-dark/50 mx-auto mb-8 transform" />
+                            <img src={APP_CONFIG.LOGO} alt={APP_CONFIG.NAME} className="sm:w-48 sm:h-48 w-48 h-48 rounded-[8rem] flex items-center justify-center text-white shadow-2xl shadow-cat-dark/50 mx-auto mb-8 transform" />
                         </div>
-                        <h1 className="text-4xl sm:text-6xl font-black text-cat-contrast mb-6 uppercase">Detalle Extremo <br />en Miniatura</h1>
+                        <h1 className="text-4xl sm:text-6xl font-black text-cat-contrast mb-6 uppercase leading-tight">{about.title}</h1>
                         <p className="text-lg text-cat-light max-w-2xl mx-auto leading-relaxed font-medium">
-                            Forjamos fantasía y coleccionables con la mayor definición. Cada miniatura está diseñada e impresa para capturar hasta el más mínimo detalle en resina premium.
+                            {about.subtitle}
                         </p>
                     </div>
                     {/* Decorative Blobs */}
@@ -44,52 +48,39 @@ const BrandInfo = ({ onClose }) => {
 
                 {/* Values Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                    <div className="bg-cat-darkest/50 p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
-                        <div className="w-16 h-16 bg-cat-light mx-auto text-[#FF0000] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <Heart size={32} />
-                        </div>
-                        <h3 className="text-xl font-black text-cat-contrast mb-3 uppercase text-center">Curado Manual</h3>
-                        <p className="text-cat-light/80 text-sm leading-relaxed text-justify">Cada miniatura se limpia, cura y procesa a mano para garantizar piezas limpias y listas para pintar.</p>
-                    </div>
-
-                    <div className="bg-cat-darkest/50 p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
-                        <div className="w-16 h-16 bg-cat-light mx-auto text-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <Target size={32} />
-                        </div>
-                        <h3 className="text-xl font-black text-cat-contrast mb-3 uppercase text">Ultra Definición</h3>
-                        <p className="text-cat-light/80 text-sm leading-relaxed text-justify">Impresión en resina premium a resoluciones extremas de micras, logrando texturas y relieves nítidos.</p>
-                    </div>
-
-                    <div className="bg-cat-darkest/50 p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
-                        <div className="w-16 h-16 bg-cat-light mx-auto text-yellow-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <Star size={32} />
-                        </div>
-                        <h3 className="text-xl font-black text-cat-contrast mb-3 uppercase text">Licencias Épicas</h3>
-                        <p className="text-cat-light/80 text-sm leading-relaxed text-justify">Colaboramos con los mejores escultores y diseñadores 3D del mundo para ofrecerte modelos exclusivos.</p>
-                    </div>
+                    {about.cards.map((card, idx) => {
+                        const IconComponent = icons[idx % icons.length];
+                        const iconColor = iconColors[idx % iconColors.length];
+                        return (
+                            <div key={idx} className="bg-cat-darkest/50 p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
+                                <div className={`w-16 h-16 bg-cat-light mx-auto ${iconColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                                    <IconComponent size={32} />
+                                </div>
+                                <h3 className="text-xl font-black text-cat-contrast mb-3 uppercase text-center">{card.title}</h3>
+                                <p className="text-cat-light/80 text-sm leading-relaxed text-justify">{card.description}</p>
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* Content Section */}
                 <div className="space-y-16">
                     <section>
                         <h2 className="text-3xl font-black text-cat-contrast mb-8 uppercase flex items-center gap-4">
-                            <span className="w-12 h-1 bg-cat-contrast rounded-full" /> Nuestra Pasión
+                            <span className="w-12 h-1 bg-cat-contrast rounded-full" /> {about.passionTitle}
                         </h2>
                         <div className="prose prose-lg text-cat-light/70 font-medium leading-relaxed max-w-none">
-                            <p>
-                                Artifex Lunaris nació del amor por los juegos de rol, la fantasía y los coleccionables. Lo que empezó como un pasatiempo buscando la miniatura perfecta para nuestras propias campañas, se convirtió en un taller de impresión 3D de alta gama dedicado a materializar figuras increíbles para pintores y jugadores exigentes.
-                            </p>
-                            <p className="mt-4">
-                                Utilizamos resina ABS-like de alta resistencia para garantizar que tus figuras no solo tengan un nivel de detalle espectacular, sino que también resistan el uso continuo en mesa y el transporte a tus partidas.
-                            </p>
+                            {about.passionParagraphs.map((pText, i) => (
+                                <p key={i} className={i > 0 ? "mt-4" : ""}>{pText}</p>
+                            ))}
                         </div>
                     </section>
 
                     {/* Social links / Contact */}
                     <section className="bg-cat-contrast/80 rounded-[3rem] p-10 text-white flex flex-col md:flex-row items-center justify-between gap-8">
                         <div>
-                            <h2 className="text-2xl font-black text-center uppercase tracking-tighter mb-2">¡Únete a la Comunidad!</h2>
-                            <p className="text-white/60 font-medium text-center">Síguenos para conocer nuevos lanzamientos, guías de pintura y procesos en el taller.</p>
+                            <h2 className="text-2xl font-black text-center uppercase tracking-tighter mb-2">{BRAND_TEXTS.HERO.title}</h2>
+                            <p className="text-white/60 font-medium text-center">{BRAND_TEXTS.HERO.subtitle}</p>
                         </div>
                         <div className="flex gap-4">
                             {import.meta.env.VITE_WHATSAPP_NUMBER && <a href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-cat-darkest/10 hover:bg-cat-darkest/20 rounded-2xl flex items-center justify-center backdrop-blur-md transition-all">
@@ -107,8 +98,8 @@ const BrandInfo = ({ onClose }) => {
 
                 {/* Footer */}
                 <div className="mt-24 text-center pb-12">
-                    <p className="text-slate-400 text-xs text-center font-black uppercase tracking-[0.5em] mb-4">Detalle Extremo en Cada Capa</p>
-                    <p className="text-cat-dark text-sm text-center font-bold">© 2026 - Artifex Lunaris</p>
+                    <p className="text-slate-400 text-xs text-center font-black uppercase tracking-[0.5em] mb-4">{about.footerSlogan}</p>
+                    <p className="text-cat-dark text-sm text-center font-bold">{about.copyright}</p>
                 </div>
             </div>
         </motion.div>
