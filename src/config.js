@@ -7,6 +7,7 @@ export const APP_CONFIG = {
     LOGO_SM: `${import.meta.env.BASE_URL}artifex_lunaris_circular.svg`,
     LOGO_NOMBRE: `${import.meta.env.BASE_URL}artifex_lunaris_logo_horizontal.svg`,
     LOGO_SIMPLE: `${import.meta.env.BASE_URL}artifex_lunaris_simple_sm.svg`,
+    LOGO_ROTO: `${import.meta.env.BASE_URL}espada_rota.svg`,
     FAVICON: `${import.meta.env.BASE_URL}artifex_lunaris_sm_logo.svg`
 };
 
@@ -103,12 +104,24 @@ export const GOOGLE_DRIVE_CONFIG = {
             icon: 'Controller',
             image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'
         },
+        {
+            id: 'FOLDER_ID_ANIME',
+            name: 'Anime',
+            icon: 'Video',
+            image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'
+        },
+        {
+            id: 'FOLDER_ID_COLECCIONABLES',
+            name: 'Coleccionables',
+            icon: 'Video',
+            image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'
+        }
     ]
 };
 
 export const CONTACT_CONFIG = {
     WHATSAPP: import.meta.env.VITE_WHATSAPP_NUMBER || '',
-    FACEBOOK_PAGE: import.meta.env.VITE_FACEBOOK_PAGE || 'your.page.username',
+    FACEBOOK_PAGE: import.meta.env.VITE_FACEBOOK_PAGE || '',
     MESSAGE: import.meta.env.VITE_WHATSAPP_MESSAGE || 'Hola, me interesa este producto del catálogo: '
 };
 

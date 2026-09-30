@@ -5,14 +5,14 @@ const CategoryGrid = ({ activeCategory, setActiveCategory }) => {
     return (
         <div className="px-6 mb-12 sm:px-12">
             <div className="flex justify-between items-center mb-8">
-                <h3 className="font-bold text-cat-dark text-xl sm:text-3xl tracking-tight">Categorías</h3>
+                <h3 className="font-bold text-cat-light text-xl sm:text-3xl tracking-tight">Categorías</h3>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
                 {GOOGLE_DRIVE_CONFIG.FOLDERS.map((folder) => {
-                    const isActive = activeCategory.id === folder.id;
+                    const isActive = activeCategory.id === folder.id && activeCategory.name === folder.name;
                     return (
                         <button
-                            key={folder.id}
+                            key={`${folder.id}-${folder.name}`}
                             onClick={() => setActiveCategory(folder)}
                             className={`relative aspect-[3/3] w-full rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden transition-all duration-500 shadow-md ${isActive ? 'ring-4 ring-cat-contrast ring-offset-4 ring-offset-cat-dark scale-95 shadow-xl opacity-100' : 'opacity-80 grayscale-[20%] hover:opacity-100 hover:grayscale-0'
                                 }`}

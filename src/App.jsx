@@ -337,6 +337,7 @@ function App() {
           activeCategory={activeCategory}
           setActiveCategory={handleCategoryChange}
         />
+
         <div
           ref={searchRef}
           className="sticky top-0 z-40 bg-[#051D1F]/5 py-4 transition-all"
@@ -345,13 +346,13 @@ function App() {
             WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
           }}
         >
-          <SearchBar ref={searchInputRef} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <SearchBar ref={searchInputRef} searchTerm={searchTerm} setSearchTerm={setSearchTerm} activeCategory={activeCategory} />
         </div>
 
         {/* Product Section */}
         <div className="px-6 mb-12 sm:px-12">
           <div className="flex justify-between items-center mb-10">
-            <h3 className="font-bold text-cat-dark text-xl sm:text-3xl">{activeCategory.name}</h3>
+            <h3 className="font-bold text-cat-contrast text-xl sm:text-3xl">Categoría: <span className="text-cat-light text-xl sm:text-3xl">{activeCategory.name}</span></h3>
             <span className="bg-cat-contrast/50 px-4 py-1 rounded-full text-cat-light font-black text-sm shadow-sm">
               {filteredProducts.length} Elementos
             </span>

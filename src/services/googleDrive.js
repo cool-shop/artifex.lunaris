@@ -23,10 +23,15 @@ export const getPermanentImageUrl = (fileId, size = 1000) => {
 export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12, orderBy = 'recency') => {
     if (folderId === 'all' || folderId === 'latest') {
         const isLatest = folderId === 'latest';
-        // To avoid 403 Forbidden with API Keys, we fetch folders individually and merge
-        const validFolders = GOOGLE_DRIVE_CONFIG.FOLDERS.filter(
-            f => f.id !== 'all' && f.id !== 'latest' && !f.id.startsWith('FOLDER_ID_')
-        );
+        const seenFolderIds = new Set();
+        const validFolders = GOOGLE_DRIVE_CONFIG.FOLDERS.filter(f => {
+            const cleanId = cleanFolderId(f.id);
+            if (!f.id || f.id === 'all' || f.id === 'latest' || cleanId.startsWith('FOLDER_ID_') || seenFolderIds.has(cleanId)) {
+                return false;
+            }
+            seenFolderIds.add(cleanId);
+            return true;
+        });
 
         let tokens = {};
         try {
@@ -47,6 +52,15 @@ export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12
 
             let allFiles = folderResults.flatMap(r => r.files);
 
+            // Deduplicate files by ID to avoid React duplicate key errors
+            const uniqueFilesMap = new Map();
+            allFiles.forEach(file => {
+                if (file && file.id && !uniqueFilesMap.has(file.id)) {
+                    uniqueFilesMap.set(file.id, file);
+                }
+            });
+            allFiles = Array.from(uniqueFilesMap.values());
+
             // If fetching latest, sort the combined results again
             if (isLatest) {
                 allFiles = allFiles.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime)).slice(0, pageSize);
@@ -63,7 +77,6 @@ export const fetchFolderFiles = async (folderId, pageToken = null, pageSize = 12
                     hasMore = true;
                 }
             });
-            console.log(allFiles)
             return {
                 files: allFiles,
                 nextPageToken: hasMore ? JSON.stringify(nextTokens) : null
