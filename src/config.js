@@ -18,8 +18,6 @@ export const THEME_CONFIG = {
         contrast: '#dd1155',
         light: '#fdfffc',
         contrastLight: '#F8B4CC',
-        tealLight: '#1cd6d9',
-        tealDark: '#0f7173',
     }
 };
 
