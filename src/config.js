@@ -103,13 +103,13 @@ export const GOOGLE_DRIVE_CONFIG = {
             image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'
         },
         {
-            id: 'FOLDER_ID_ANIME',
+            id: 'https://drive.google.com/drive/folders/1AHyV-d4SgcmM1-s1OSVuX-pAJSeQwix4',
             name: 'Anime',
             icon: 'Video',
             image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'
         },
         {
-            id: 'FOLDER_ID_COLECCIONABLES',
+            id: 'https://drive.google.com/drive/folders/1f7M5Xdni_e0AIoHNbuZQFqLYDetVGG_d',
             name: 'Coleccionables',
             icon: 'Video',
             image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'
