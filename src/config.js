@@ -106,13 +106,13 @@ export const GOOGLE_DRIVE_CONFIG = {
             id: 'https://drive.google.com/drive/folders/1AHyV-d4SgcmM1-s1OSVuX-pAJSeQwix4',
             name: 'Anime',
             icon: 'Video',
-            image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'
+            image: 'https://lh3.googleusercontent.com/u/0/d/18SpunH2bcz7rkw-YhARSNROW6iaZrr8f=s400'
         },
         {
             id: 'https://drive.google.com/drive/folders/1f7M5Xdni_e0AIoHNbuZQFqLYDetVGG_d',
             name: 'Coleccionables',
             icon: 'Video',
-            image: 'https://lh3.googleusercontent.com/u/0/d/1OGx3wZL3zP0flnAh5DWlZJcJnECrOWsF=s400'
+            image: 'https://lh3.googleusercontent.com/u/0/d/1ZxVa9kBNMMexd0ZmR2a7gDaRR3IMvGjy=s400'
         }
     ]
 };
